@@ -36,7 +36,7 @@ export default function App() {
       setError(null);
       soundManager.playSound(SoundType.CONNECT);
       
-      // 获取Gemini配置
+      // 获取Gemini配置（安全方式，不包含API密钥）
       const config = await fetch("/api/gemini").then((response) =>
         response.json()
       );
@@ -45,7 +45,19 @@ export default function App() {
         throw new Error(config.error);
       }
 
-      // 连接到Gemini
+      // 注意：由于Gemini API需要WebSocket连接且需要API密钥
+      // 在生产环境中，应该实现一个WebSocket代理服务器
+      // 当前实现为简化版本，实际部署时需要完善
+
+      // 连接到Gemini（通过代理）
+      // TODO: 实现WebSocket代理逻辑
+      console.log('Gemini配置已获取:', config);
+      
+      // 临时：显示提示信息
+      setError('Gemini WebSocket代理尚未完全实现。请参考文档完善WebSocket代理服务器。');
+      
+      /* 
+      // 原始的不安全实现（已禁用）
       await geminiClient.connect(config.apiKey);
 
       // 设置消息回调
@@ -80,6 +92,7 @@ export default function App() {
         audio: true,
       });
       await geminiClient.startAudioStream(stream);
+      */
 
     } catch (error: any) {
       console.error("启动会话失败:", error);
@@ -100,7 +113,8 @@ export default function App() {
     }
   }
 
-  // 处理Gemini消息
+  // 处理Gemini消息（当前未使用，保留供将来实现）
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   function handleGeminiMessage(message: any) {
     // 根据Gemini的消息格式处理不同类型的响应
     if (message.toolCall) {

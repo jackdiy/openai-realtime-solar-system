@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Script from "next/script";
 import "./globals.css";
 import "@/components/enhanced-styles.css";
 
@@ -28,11 +27,6 @@ export default function RootLayout({
         />
       </head>
       <body className="antialiased">
-        {/* Tone.js for audio */}
-        <Script 
-          src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"
-          strategy="beforeInteractive"
-        />
         {children}
       </body>
     </html>

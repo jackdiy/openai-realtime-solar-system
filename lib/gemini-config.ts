@@ -1,5 +1,5 @@
 // Gemini API 配置
-// 使用Gemini 2.5 Flash Lite进行语音交互
+// 使用Gemini 2.0 Flash Exp进行语音交互
 
 const PLANETS = [
   "太阳", "水星", "金星", "地球", "火星", 
