@@ -390,5 +390,10 @@ export class GestureRecognitionService {
   }
 }
 
-// 导出单例
-export const gestureService = new GestureRecognitionService();
+// 导出单例 - 仅在浏览器环境中创建
+export const gestureService = typeof window !== 'undefined' ? new GestureRecognitionService() : ({
+  start: async () => {},
+  stop: () => {},
+  onGesture: () => () => {},
+  isRunning: () => false,
+} as unknown as GestureRecognitionService);

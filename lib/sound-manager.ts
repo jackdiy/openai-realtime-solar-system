@@ -23,13 +23,19 @@ export class SoundManager {
   private isMusicEnabled: boolean = true;
   private volume: number = 0.5;
   private musicVolume: number = 0.3;
+  private initialized: boolean = false;
 
   constructor() {
-    this.init();
+    // 延迟初始化，只在浏览器环境中执行
+    if (typeof window !== 'undefined') {
+      this.init();
+    }
   }
 
   // 初始化音效系统
   private async init() {
+    if (this.initialized) return;
+    
     try {
       // 创建合成器
       this.synth = new Tone.PolySynth(Tone.Synth, {
@@ -42,6 +48,7 @@ export class SoundManager {
         },
       }).toDestination();
 
+      this.initialized = true;
       console.log('音效系统初始化成功');
     } catch (error) {
       console.error('音效系统初始化失败:', error);
@@ -50,6 +57,8 @@ export class SoundManager {
 
   // 播放音效
   async playSound(type: SoundType) {
+    if (typeof window === 'undefined') return;
+    if (!this.initialized) await this.init();
     if (!this.isEnabled || !this.synth) return;
 
     try {
@@ -107,6 +116,8 @@ export class SoundManager {
 
   // 播放背景音乐
   async playBackgroundMusic() {
+    if (typeof window === 'undefined') return;
+    if (!this.initialized) await this.init();
     if (!this.isMusicEnabled) return;
 
     try {
@@ -140,6 +151,8 @@ export class SoundManager {
 
   // 停止背景音乐
   stopBackgroundMusic() {
+    if (typeof window === 'undefined') return;
+    
     try {
       Tone.Transport.stop();
       Tone.Transport.cancel();
@@ -166,6 +179,8 @@ export class SoundManager {
 
   // 设置音量
   setVolume(volume: number) {
+    if (typeof window === 'undefined') return;
+    
     this.volume = Math.max(0, Math.min(1, volume));
     if (this.synth) {
       this.synth.volume.value = Tone.gainToDb(this.volume);
@@ -189,6 +204,8 @@ export class SoundManager {
 
   // 清理资源
   dispose() {
+    if (typeof window === 'undefined') return;
+    
     this.stopBackgroundMusic();
     if (this.synth) {
       this.synth.dispose();
@@ -201,5 +218,16 @@ export class SoundManager {
   }
 }
 
-// 导出单例
-export const soundManager = new SoundManager();
+// 导出单例 - 仅在浏览器环境中创建
+export const soundManager = typeof window !== 'undefined' ? new SoundManager() : ({
+  playSound: async () => {},
+  playBackgroundMusic: async () => {},
+  stopBackgroundMusic: () => {},
+  setEnabled: () => {},
+  setMusicEnabled: () => {},
+  setVolume: () => {},
+  getVolume: () => 0.5,
+  isEnabledState: () => true,
+  isMusicEnabledState: () => true,
+  dispose: () => {},
+} as unknown as SoundManager);

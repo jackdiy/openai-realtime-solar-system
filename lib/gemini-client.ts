@@ -18,7 +18,10 @@ export class GeminiRealtimeClient {
   private onErrorCallback: ((error: any) => void) | null = null;
 
   constructor() {
-    this.audioContext = new AudioContext({ sampleRate: 16000 });
+    // 仅在浏览器环境中初始化AudioContext
+    if (typeof window !== 'undefined') {
+      this.audioContext = new AudioContext({ sampleRate: 16000 });
+    }
   }
 
   // 连接到Gemini API
@@ -247,5 +250,19 @@ export class GeminiRealtimeClient {
   }
 }
 
-// 导出单例
-export const geminiClient = new GeminiRealtimeClient();
+// 导出单例 - 仅在浏览器环境中创建
+export const geminiClient = typeof window !== 'undefined' ? new GeminiRealtimeClient() : ({
+  connect: async () => {},
+  disconnect: () => {},
+  send: () => {},
+  sendAudio: () => {},
+  sendText: () => {},
+  sendToolResponse: () => {},
+  startAudioStream: async () => {},
+  stopAudioStream: () => {},
+  onMessage: () => {},
+  onConnected: () => {},
+  onDisconnected: () => {},
+  onError: () => {},
+  getIsConnected: () => false,
+} as unknown as GeminiRealtimeClient);
