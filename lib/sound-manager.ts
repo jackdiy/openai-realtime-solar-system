@@ -116,7 +116,7 @@ export class SoundManager {
       }
 
       // 创建环境音乐序列
-      const sequence = new Tone.Sequence(
+      new Tone.Sequence(
         (time, note) => {
           if (this.synth) {
             this.synth.triggerAttackRelease(note, '2n', time, 0.1);

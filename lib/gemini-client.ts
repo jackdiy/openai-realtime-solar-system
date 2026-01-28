@@ -184,7 +184,8 @@ export class GeminiRealtimeClient {
     }
 
     // 创建音频源
-    const source = this.audioContext.createMediaStreamSource(stream);
+    // 注意：这里简化了音频处理，实际应用中可能需要更复杂的处理逻辑
+    this.audioContext.createMediaStreamSource(stream);
     
     // 这里可以添加音频处理逻辑
     // 例如：降采样到16kHz，转换为PCM格式等

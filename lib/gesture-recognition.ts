@@ -329,7 +329,6 @@ export class GestureRecognitionService {
   private isThumbsUp(hand: any[]): boolean {
     const thumbTip = hand[4];
     const thumbIP = hand[3];
-    const indexMCP = hand[5];
     
     // 大拇指指尖在大拇指IP关节之上，且其他手指弯曲
     const thumbUp = thumbTip.y < thumbIP.y;
