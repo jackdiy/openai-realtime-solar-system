@@ -1,5 +1,5 @@
 // Gemini API 配置
-// 使用Gemini 2.0 Flash Exp进行语音交互
+// 使用Gemini 2.5 Flash Lite进行语音交互
 
 const PLANETS = [
   "太阳", "水星", "金星", "地球", "火星", 
@@ -133,5 +133,5 @@ export const GEMINI_INSTRUCTIONS = `
 如果用其他语言说话，请使用母语口音。
 `;
 
-export const GEMINI_MODEL = "gemini-2.0-flash-exp"; // 使用最新的Gemini 2.0 Flash实验版
+export const GEMINI_MODEL = "gemini-2.5-flash-lite"; // 使用Gemini 2.5 Flash Lite
 export const GEMINI_VOICE = "Puck"; // Gemini语音选项
